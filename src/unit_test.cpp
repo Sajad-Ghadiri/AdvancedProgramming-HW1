@@ -3,7 +3,7 @@
 #include "gmock/gmock.h"
 #include "hw1.h"
 
-/*
+
 TEST(HW1Test, ZEROS) {
     Matrix matrix{algebra::zeros(5, 6)};
 
@@ -70,7 +70,7 @@ TEST(HW1Test, MULTIPLY1) {
         for (size_t j{}; j < mult[i].size(); j++)
             EXPECT_NEAR(mult[i][j], matrix[i][j]*3.5, 0.03);
 }
-
+/*
 TEST(HW1Test, MULTIPLY2) {
     // Caution: multiplication of 2 empty matrix
     Matrix matrix{algebra::multiply(Matrix{}, Matrix{})};
