@@ -70,7 +70,7 @@ TEST(HW1Test, MULTIPLY1) {
         for (size_t j{}; j < mult[i].size(); j++)
             EXPECT_NEAR(mult[i][j], matrix[i][j]*3.5, 0.03);
 }
-/*
+
 TEST(HW1Test, MULTIPLY2) {
     // Caution: multiplication of 2 empty matrix
     Matrix matrix{algebra::multiply(Matrix{}, Matrix{})};
@@ -284,7 +284,7 @@ TEST(HW1Test, CONCATENATE2) {
     EXPECT_DOUBLE_EQ(matrix[0][3], matrix2[0][0]);
     EXPECT_DOUBLE_EQ(matrix[1][3], matrix2[1][0]);
 }
-
+/*
 TEST(HW1Test, ERO_SWAP) {
     // Caution: r1 or r2 inputs are out of range
     EXPECT_THROW(algebra::ero_swap(Matrix{{1, 2}}, 0, 1), std::logic_error);
