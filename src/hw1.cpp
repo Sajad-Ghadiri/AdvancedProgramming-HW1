@@ -143,6 +143,7 @@ Matrix algebra::minor(const Matrix& matrix, size_t n, size_t m)
 
 
 
+
 double algebra::determinant(const Matrix& matrix)
 {    
      if( matrix.empty() )
@@ -173,6 +174,7 @@ return det;
 
 
 
+
 Matrix algebra::inverse(const Matrix& matrix)
 {
      if( matrix.empty() )
@@ -198,41 +200,113 @@ Matrix algebra::inverse(const Matrix& matrix)
           for(size_t j{} ; j < matrix[0].size() ; j++)
                {
                     temp1 = algebra::minor(matrix,i,j);
-                    double det = algebra::determinant(temp1);
+                    double det = algebra::determinant(temp1); //we are creating adjoint matrix with calculating determinant of minors
                     result[i][j] = pow(-1 , i+j) * det ;
                }
      
      result = algebra::transpose(result);
      return algebra::multiply(result , (1/main_det)) ;
     
-
 }
 
 
-Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2 ,int axis)
+
+
+Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2 , int axis)
 {
-     if( (matrix1[0].size() != matrix2[0].size()) && (matrix1.size() != matrix2.size()))
-     {
-          throw std::logic_error( "Caution: matrices with wrong dimensions cannot be concatenated" );
-     }
     
      Matrix concatenated_matrix_row {matrix1};
      Matrix concatenated_matrix_column {algebra::transpose(matrix1)};
      if( axis == 0 )
      {
+          if( (matrix1[0].size() != matrix2[0].size()) )
+          {
+          throw std::logic_error( "Caution: matrices with wrong dimensions cannot be concatenated" );
+          }
+
           for(size_t i{} ; i < matrix2.size() ; i++)
                concatenated_matrix_row.push_back(matrix2[i]);
           
           return concatenated_matrix_row ;
      }
-     if( axis == 1 )
+
+     else if( axis == 1 )
      {
+          if( (matrix1.size() != matrix2.size()) )
+          {
+          throw std::logic_error( "Caution: matrices with wrong dimensions cannot be concatenated" );
+          }
           for(size_t i{} ; i < matrix2[0].size() ; i++)
                concatenated_matrix_column.push_back(algebra::transpose(matrix2)[i]); // first i transpose the whole matrix and then i choose rows 1 by 1
-          return concatenated_matrix_column;
+          return algebra::transpose(concatenated_matrix_column);
           
      }
+     else
+     {
+          return Matrix {};
+     }
 
-     
 }
 
+Matrix algebra::ero_swap(const Matrix& matrix, size_t r1, size_t r2)
+{    
+     if( matrix.empty() )
+     {
+          return Matrix{};
+     }
+
+     if( r1 > matrix.size() || r2 > matrix.size() || r1 <= 0  || r2 <= 0)
+     {
+          throw std::logic_error( "Caution: r1 or r2 inputs are out of range" );
+     }
+     Matrix swaped_matrix { matrix } ;
+     swaped_matrix[r2].swap(swaped_matrix[r1]);
+     return swaped_matrix ;
+}
+
+Matrix algebra::ero_multiply(const Matrix& matrix, size_t r, double c)
+{
+     if( matrix.empty() )
+     {
+          return Matrix{};
+     }
+
+     Matrix multipied_matrix { matrix } ;
+     Matrix temp {algebra::multiply(matrix , c)} ;
+
+     for(size_t i{} ; i < matrix.size() ; i++)
+          if(i == r)
+          {
+               multipied_matrix[r] = temp[r];
+          }
+return multipied_matrix;
+
+}
+
+Matrix algebra::ero_sum(const Matrix& matrix, size_t r1, double c, size_t r2)
+{
+     if( matrix.empty() )
+     {
+          return Matrix{};
+     }
+
+     Matrix sumed_matrix { matrix } ;
+     Matrix temp {algebra::multiply(matrix , c)} ;
+
+     for(size_t i{} ; i < matrix.size() ; i++)
+          if(i == r2)
+          {
+               temp = algebra::sum(sumed_matrix , temp);
+               sumed_matrix[r2] = temp[r2] ;
+               return sumed_matrix;
+          }
+          else{}
+
+return Matrix{};
+}
+
+Matrix upper_triangular(const Matrix& matrix)
+{
+     
+
+}
